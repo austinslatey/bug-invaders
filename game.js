@@ -51,7 +51,12 @@ function preload() {
       gameState.cursors = this.input.keyboard.createCursorKeys();
   
       // Add new code below:
-      
+    gameState.enemies = this.physics.add.group();
+    for (let yVal = 1; yVal < 4; yVal++) {
+      for (let xVal=1; xVal < 9; xVal++) {
+        gameState.enemies.create(50 * xVal, 50* yVal, 'bug1').setScale(.6).setGravityY(-200);
+      }  
+    }
   }
   
   function update() {
