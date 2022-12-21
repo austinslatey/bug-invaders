@@ -54,9 +54,60 @@ function preload() {
     gameState.enemies = this.physics.add.group();
     for (let yVal = 1; yVal < 4; yVal++) {
       for (let xVal=1; xVal < 9; xVal++) {
-        gameState.enemies.create(50 * xVal, 50* yVal, 'bug1').setScale(.6).setGravityY(-200);
+        gameState.enemies.create(
+          50 * xVal, 
+          50 * yVal, 
+          'bug1'
+          ).setScale(.6).setGravityY(-200);
       }  
     }
+
+    const pellets = this.physics.add.group();
+    const genPellet = () => {
+      let randomBug = Phaser.Utils.Array.GetRandom(gameState.enemies.getChildren());
+      pellets.create(
+        randomBug.x,
+        randomBug.y,
+        'bugPellet'
+        );
+    }
+
+    gameState.pelletsLoop = this.time.addEvent({
+      delay: 300,
+      callback: genPellet,
+      callbackScope: this,
+      loop: true,
+    });
+
+    this.physics.add.collider(pellets, platforms, (pellet) => {
+      pellet.destroy();
+    });
+
+    this.physics.add.collider(pellets, gameState.player, () => {
+      // When gameState.active is false, players can no longer control Codey
+      gameState.active = false;
+
+      // Calling the .destroy() method on gameState.pelletsLoop stops the generation of pellets
+      gameState.pelletsLoop.destroy();
+
+      // Since game is over, pause physics
+      this.physics.pause();
+
+      // gameState.enemyVelocity = 1;
+
+      // Add in text for players to know what to do afterwards
+
+      this.add.text(
+        // x-val
+        210, 
+        // y-val
+        250, 
+        'Game Over \nClick to Restart',
+        // Style 
+        { fontSize: '15px', fill: '#000000'});
+    });
+  
+    // End of create
   }
   
   function update() {
