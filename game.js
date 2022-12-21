@@ -72,6 +72,7 @@ function preload() {
         );
     }
 
+    // An event loop that continuously creates bug pellets
     gameState.pelletsLoop = this.time.addEvent({
       delay: 300,
       callback: genPellet,
@@ -79,10 +80,12 @@ function preload() {
       loop: true,
     });
 
+    // Collider removes pellets when they hit the ground
     this.physics.add.collider(pellets, platforms, (pellet) => {
       pellet.destroy();
     });
 
+    // Collider between Codey and pellets, callback sets game over functionality
     this.physics.add.collider(pellets, gameState.player, () => {
       // When gameState.active is false, players can no longer control Codey
       gameState.active = false;
@@ -105,6 +108,18 @@ function preload() {
         'Game Over \nClick to Restart',
         // Style 
         { fontSize: '15px', fill: '#000000'});
+
+    });
+
+    //Group object for Codey's ammo
+    gameState.bugRepellent = this.physics.add.group();
+
+    // Collider between repellent and bugs, 
+    //callback removes repellent, and bugs and updates the scoreText
+    this.physics.add.collider(gameState.enemies, gameState.bugRepellent, (bug, repellent) => {
+      bug.destroy();
+      repellent.destroy();
+      gameState.scoreText.setText(`Bugs Left ${numOfTotalEnemies()}`)
     });
   
     // End of create
@@ -123,11 +138,15 @@ function preload() {
   
           // Execute code if the spacebar key is pressed
           if (Phaser.Input.Keyboard.JustDown(gameState.cursors.space)) {
-              
+              gameState.bugRepellent.create(
+                gameState.player.x, 
+                gameState.player.y, 
+                'bugRepellent'
+                ).setGravityY(-400);
           }
   
           // Add logic for winning condition and enemy movements below:
-      
+          
     }
   }
   
