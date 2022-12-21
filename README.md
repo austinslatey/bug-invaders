@@ -15,7 +15,7 @@
   ---
 
   ## Deployment
-  [Bug-Invaders](https://austinslatey.github.io/bug-invaders/=)
+  [Bug-Invaders](https://austinslatey.github.io/bug-invaders/)
 
   ## User-Story
   AS A USER I WANT to play a version of Space Invaders in the browser
