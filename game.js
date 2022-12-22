@@ -20,7 +20,9 @@ function preload() {
     return totalEnemies;
   }
   
-  const gameState = {};
+  const gameState = {
+    enemyVelocity: 1
+  };
   
   function create() {
       // When gameState.active is true, the game is being played and not over. When gameState.active is false, then it's game over
@@ -96,7 +98,7 @@ function preload() {
       // Since game is over, pause physics
       this.physics.pause();
 
-      // gameState.enemyVelocity = 1;
+      gameState.enemyVelocity = 1;
 
       // Add in text for players to know what to do afterwards
 
@@ -122,6 +124,19 @@ function preload() {
       gameState.scoreText.setText(`Bugs Left ${numOfTotalEnemies()}`)
     });
   
+    this.physics.add.collider(gameState.enemies, gameState.player, () => {
+      gameState.active = false;
+      gameState.enemyVelocity = 1;
+      this.physics.pause();
+      this.add.text(
+        // x-val
+        210, 
+        // y-val
+        250, 
+        'Game Over \nClick to Restart',
+        // Style 
+        { fontSize: '15px', fill: '#000000'});     
+    });
     // End of create
   }
   
@@ -146,7 +161,25 @@ function preload() {
           }
   
           // Add logic for winning condition and enemy movements below:
-          
+          if (numOfTotalEnemies() === 0) {
+            gameState.active = false;
+            this.physics.pause();
+            gameState.enemyVelocity = 1;
+            this.add.text(100, 250, 'You have won!', { fontSize: '15px', fill: '#000000'
+          });         
+          } else {
+            gameState.enemies.getChildren().forEach(bug => {
+              bug.x += gameState.enemyVelocity;
+            });
+            gameState.leftMostBug = sortedEnemies()[0];
+            gameState.rightMostBug = sortedEnemies()[sortedEnemies().length - 1];
+            if (gameState.leftMostBug.x < 10 || gameState.rightMostBug.x > 440) {
+              gameState.enemyVelocity *= -1;
+              gameState.enemies.getChildren().forEach(enemy => {
+                enemy.y += 10;
+              })            
+            }          
+          }
     }
   }
   
