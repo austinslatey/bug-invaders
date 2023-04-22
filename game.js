@@ -25,8 +25,10 @@ function preload() {
   };
   
   function create() {
+    
       // When gameState.active is true, the game is being played and not over. When gameState.active is false, then it's game over
       gameState.active = true;
+      
   
       // When gameState.active is false, the game will listen for a pointerup event and restart when the event happens
       this.input.on('pointerup', () => {
@@ -107,7 +109,7 @@ function preload() {
         210, 
         // y-val
         250, 
-        'Game Over \nClick to Restart \nLeft and Right Arrow Keys to Strafe \nSpaceBar to Fire',
+        'Game Over \nClick to Restart \nStrafe with Left and Right \nSpaceBar to Fire',
         // Style 
         { fontSize: '15px', fill: '#000000'});
 
