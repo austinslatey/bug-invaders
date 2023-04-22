@@ -107,7 +107,7 @@ function preload() {
         210, 
         // y-val
         250, 
-        'Game Over \nClick to Restart',
+        'Game Over \nClick to Restart \nLeft and Right Arrow Keys to Strafe \nSpaceBar to Fire',
         // Style 
         { fontSize: '15px', fill: '#000000'});
 
